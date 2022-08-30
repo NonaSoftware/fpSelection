@@ -6,6 +6,7 @@ on:
     branches: [master]
   # run it during pull request
   pull_request:
+    branches: [ "master" ]
 
 jobs:
   # define job to build and publish docker image
@@ -18,7 +19,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       # setup Docker buld action
       - name: Set up Docker Buildx
         id: buildx
@@ -46,8 +46,9 @@ jobs:
           tags: |
             nonasoftware/fpselection:latest 
             ghcr.io/nonasoftware/fpselection:latest
-          # build on feature branches, push only on main branch
+          # build on feature branches, push only on master branch
           push: ${{ github.ref == 'refs/heads/master' }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+        
